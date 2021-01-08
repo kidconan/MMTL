@@ -387,17 +387,17 @@ def main(env_name, ckt_path, cross_idx_list, crossprefix, net_conf, cnn2rnn, rnn
 				torch.cuda.manual_seed_all(seed)
 			torch.backends.cudnn.deterministic = True
 
-			asr_model = CRNN(out_dim=4, cnn_setting=cnn_setting, rnn_setting=rnn_setting,
+			ser_model = CRNN(out_dim=4, cnn_setting=cnn_setting, rnn_setting=rnn_setting,
 							 pooling_setting=pooling_setting, dnn_setting=dnn_setting, dropout_rate=drop_rate,
 							 cnn2rnn=cnn2rnn, rnn2dnn=rnn2dnn)
 
-			asr_model.cuda(gpus[0])
-			asr_model.load_state_dict(para_file['model_state_dict'])
+			ser_model.cuda(gpus[0])
+			ser_model.load_state_dict(para_file['model_state_dict'])
 			main_optimizer_state = para_file['main_optimizer_share']
 
-			meta_test(asr_model, optim_state=main_optimizer_state, cross_idx=cross_idx, cross_path=cross_path,
+			meta_test(ser_model, optim_state=main_optimizer_state, cross_idx=cross_idx, cross_path=cross_path,
 					  learning_rate=0.001, outer_epoch=outer_epoch, ckp_pth=ckt_path, penlty_bool=penlty_bool)
-			del asr_model
+			del ser_model
 			del main_optimizer_state
 
 		print("=================================================Finish the leave %d speaker programming"
